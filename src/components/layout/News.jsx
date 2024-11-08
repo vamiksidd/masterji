@@ -8,13 +8,19 @@ import {
   CardAuthor,
 } from "@/components/ui/card";
 import { Button } from "../ui/button";
-import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import useFetch from "../../hook/useFetch.jsx";
+
 export default function News() {
   const [isChecked, setIsChecked] = useState(false);
   const [view, setView] = useState("grid-cols-1");
-
-  const [newsData, setNewsData] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const { data, loading, error } = useFetch(
+    `https://newsapi.org/v2/top-headlines?country=us&apiKey=${process.env.NEWS_API_KEY}&page=${currentPage}&pageSize=6`
+  );
+
+  // console.log(data);
 
   const handleCheckboxChange = () => {
     setIsChecked((prev) => !prev);
@@ -28,26 +34,10 @@ export default function News() {
   const handlePrev = () => {
     setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
   };
-  useEffect(() => {
-    async function getNews() {
-      try {
-        const res = await axios.get(
-          `https://newsapi.org/v2/top-headlines?country=us&apiKey=bf4a713110f749abb82bde9b031bbdca&page=${currentPage}&pageSize=5`
-        );
-        if (!res) {
-          throw Error("error occured in news:");
-        }
-        setNewsData(res.data);
-        // console.log(res);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-    getNews();
-  }, [currentPage]);
-  // getNews();
-
-  // console.log(newsData?.articles);
+  useEffect(() => {}, [currentPage]);
+  if (error) {
+    toast.error("Something went wrong!!");
+  }
 
   return (
     <div className="bg-white p-5 rounded-md w-full md:w-3/4">
@@ -128,6 +118,7 @@ export default function News() {
           </button>
         </div>
       </div>
+
       <div
         className={`my-5 ${view}  grid gap-5 h-full max-h-screen overflow-y-scroll  pr-2 
       [&::-webkit-scrollbar]:w-2
@@ -138,8 +129,21 @@ export default function News() {
   dark:[&::-webkit-scrollbar-track]:bg-neutral-700
   dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500 `}
       >
-        {newsData &&
-          newsData?.articles.map((article, index) => (
+        {loading && !error ? (
+          <div className="h-max px-5 w-96 mx-auto py-10 border shadow-md rounded-md">
+            <h3 className="h-10 bg-gray-200 rounded animate-pulse"></h3>
+            <ul className="mt-5">
+              <li className="w-60 h-6 bg-gray-200 rounded dark:bg-gray-700 animate-pulse"></li>
+            </ul>
+            <ul className="mt-5 flex gap-3">
+              <li className="w-full h-6 bg-gray-200 rounded dark:bg-gray-700 animate-pulse"></li>
+            </ul>
+            <ul className="mt-5 flex gap-3">
+              <li className="w-full h-6 bg-gray-200 rounded dark:bg-gray-700 animate-pulse"></li>
+            </ul>
+          </div>
+        ) : (
+          data?.articles.map((article, index) => (
             <Card key={index}>
               <CardHeader>
                 <img
@@ -163,7 +167,8 @@ export default function News() {
                 </a>
               </CardHeader>
             </Card>
-          ))}
+          ))
+        )}
       </div>
 
       <div className="flex justify-between">
@@ -182,6 +187,7 @@ export default function News() {
           Next
         </Button>
       </div>
+      <ToastContainer />
     </div>
   );
 }

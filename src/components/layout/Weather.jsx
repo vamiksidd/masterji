@@ -5,9 +5,12 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import axios from "axios";
 import Image from "next/image";
+import { toast } from "react-toastify";
+import { fetchDataFromApi } from "@/utils/api";
 export default function Weather() {
   const [city, setCity] = useState("");
   const [weatherData, setWeatherData] = useState(null);
+
   const handleChange = (e) => {
     setCity(e.target.value);
   };
@@ -32,23 +35,20 @@ export default function Weather() {
 
   const getWeather = async () => {
     try {
-      const res = await axios.get(
+      const res = await fetchDataFromApi(
         `https://api.openweathermap.org/data/2.5/weather?appid=${process.env.WEATHER_API_KEY}&q=${city}&units=metric`
       );
-      // console.log(res);
 
       if (!res) {
         throw Error("Invalid input");
       }
-      setWeatherData(res.data);
+      setWeatherData(res);
       setCity("");
     } catch (error) {
+      toast.error("Something went wrong");
       console.log("error in weather:", error);
-      alert("invalid input");
     }
   };
-
-  // console.log(weatherData);
 
   return (
     <div className="flex-col justify-center bg-white p-5  rounded-md w-full md:w-1/3 ">

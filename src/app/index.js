@@ -1,4 +1,4 @@
-import WeatherNews from "./dashboard-news/page";
+import WeatherNews from "./dashboard/weather-news/page";
 
 export {
     WeatherNews

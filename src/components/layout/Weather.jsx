@@ -3,7 +3,6 @@
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
-import axios from "axios";
 import Image from "next/image";
 import { toast } from "react-toastify";
 import { fetchDataFromApi } from "@/utils/api";

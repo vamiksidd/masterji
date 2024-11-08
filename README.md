@@ -1,5 +1,28 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+
+## Masterji DashBoard
+ Dashboard web application which uses technology stack of Next.js, React, Tailwind CSS, and TypeScript. Which features following:
+ Weather and News DashBoard
+ Kanban Board
+ Analytics DashBoard with Charts and Tables
+
+## Tech Stack
+ NextJs
+ ShadCn UI Component
+ Axios for data fetching
+
+
+# Home Page
+ Weather and News Dashboard (Route: /dashboard/weather-news)
+ This page has two components:
+
+ Weather - in which user can search city or country name to get weather updates.
+
+ News article -  this displays news headlines , author , etc which allows users to browse through different pages of content. The user can also change its view from list mode to grid mode
+
+
+
 ## Getting Started
 
 First, run the development server:
@@ -16,7 +39,9 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+
+
+
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
@@ -27,11 +52,8 @@ To learn more about Next.js, take a look at the following resources:
 - [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
 - [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
 ## Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
 

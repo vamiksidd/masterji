@@ -44,11 +44,11 @@ export default function Weather() {
       setCity("");
     } catch (error) {
       console.log("error in weather:", error);
-      alert("invalid input")
+      alert("invalid input");
     }
   };
 
-  console.log(weatherData);
+  // console.log(weatherData);
 
   return (
     <div className="flex-col justify-center bg-white p-5  rounded-md w-full md:w-1/3 ">

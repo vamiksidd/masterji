@@ -8,10 +8,13 @@ import {
   CardAuthor,
 } from "@/components/ui/card";
 import { Button } from "../ui/button";
-
+import axios from "axios";
 export default function News() {
   const [isChecked, setIsChecked] = useState(false);
-  const [view, setView] = useState("grid-cols-1"); // Default to list view
+  const [view, setView] = useState("grid-cols-1");
+
+  const [newsData, setNewsData] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
 
   const handleCheckboxChange = () => {
     setIsChecked((prev) => !prev);
@@ -19,6 +22,32 @@ export default function News() {
       prevView === "grid-cols-1" ? "grid-cols-2" : "grid-cols-1"
     );
   };
+  const handleNext = () => {
+    setCurrentPage((prevPage) => prevPage + 1);
+  };
+  const handlePrev = () => {
+    setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
+  };
+  useEffect(() => {
+    async function getNews() {
+      try {
+        const res = await axios.get(
+          `https://newsapi.org/v2/top-headlines?country=us&apiKey=bf4a713110f749abb82bde9b031bbdca&page=${currentPage}&pageSize=5`
+        );
+        if (!res) {
+          throw Error("error occured in news:");
+        }
+        setNewsData(res.data);
+        // console.log(res);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    getNews();
+  }, [currentPage]);
+  // getNews();
+
+  // console.log(newsData?.articles);
 
   return (
     <div className="bg-white p-5 rounded-md w-full md:w-3/4">
@@ -99,7 +128,6 @@ export default function News() {
           </button>
         </div>
       </div>
-
       <div
         className={`my-5 ${view}  grid gap-5 h-full max-h-screen overflow-y-scroll  pr-2 
       [&::-webkit-scrollbar]:w-2
@@ -110,92 +138,47 @@ export default function News() {
   dark:[&::-webkit-scrollbar-track]:bg-neutral-700
   dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500 `}
       >
-        <Card>
-          <CardHeader>
-            <CardTitle>title goes here</CardTitle>
-            <CardAuthor>Author here</CardAuthor>
-            <CardDescription>Description here</CardDescription>
-            <p className="text-blue-600 text-sm">Read more</p>
-            <p className="text-blue-600 text-sm">View Article</p>
-          </CardHeader>
-        </Card>{" "}
-        <Card>
-          <CardHeader>
-            <CardTitle>title goes here</CardTitle>
-            <CardAuthor>Author here</CardAuthor>
-            <CardDescription>Description here</CardDescription>
-            <p className="text-blue-600 text-sm">Read more</p>
-            <p className="text-blue-600 text-sm">View Article</p>
-          </CardHeader>
-        </Card>{" "}
-        <Card>
-          <CardHeader>
-            <CardTitle>title goes here</CardTitle>
-            <CardAuthor>Author here</CardAuthor>
-            <CardDescription>Description here</CardDescription>
-            <p className="text-blue-600 text-sm">Read more</p>
-            <p className="text-blue-600 text-sm">View Article</p>
-          </CardHeader>
-        </Card>{" "}
-        <Card>
-          <CardHeader>
-            <CardTitle>title goes here</CardTitle>
-            <CardAuthor>Author here</CardAuthor>
-            <CardDescription>Description here</CardDescription>
-            <p className="text-blue-600 text-sm">Read more</p>
-            <p className="text-blue-600 text-sm">View Article</p>
-          </CardHeader>
-        </Card>{" "}
-        <Card>
-          <CardHeader>
-            <CardTitle>title goes here</CardTitle>
-            <CardAuthor>Author here</CardAuthor>
-            <CardDescription>Description here</CardDescription>
-            <p className="text-blue-600 text-sm">Read more</p>
-            <p className="text-blue-600 text-sm">View Article</p>
-          </CardHeader>
-        </Card>{" "}
-        <Card>
-          <CardHeader>
-            <CardTitle>title goes here</CardTitle>
-            <CardAuthor>Author here</CardAuthor>
-            <CardDescription>Description here</CardDescription>
-            <p className="text-blue-600 text-sm">Read more</p>
-            <p className="text-blue-600 text-sm">View Article</p>
-          </CardHeader>
-        </Card>{" "}
-        <Card>
-          <CardHeader>
-            <CardTitle>title goes here</CardTitle>
-            <CardAuthor>Author here</CardAuthor>
-            <CardDescription>Description here</CardDescription>
-            <p className="text-blue-600 text-sm">Read more</p>
-            <p className="text-blue-600 text-sm">View Article</p>
-          </CardHeader>
-        </Card>{" "}
-        <Card>
-          <CardHeader>
-            <CardTitle>title goes here</CardTitle>
-            <CardAuthor>Author here</CardAuthor>
-            <CardDescription>Description here</CardDescription>
-            <p className="text-blue-600 text-sm">Read more</p>
-            <p className="text-blue-600 text-sm">View Article</p>
-          </CardHeader>
-        </Card>{" "}
-        <Card>
-          <CardHeader>
-            <CardTitle>title goes here</CardTitle>
-            <CardAuthor>Author here</CardAuthor>
-            <CardDescription>Description here</CardDescription>
-            <p className="text-blue-600 text-sm">Read more</p>
-            <p className="text-blue-600 text-sm">View Article</p>
-          </CardHeader>
-        </Card>{" "}
+        {newsData &&
+          newsData?.articles.map((article, index) => (
+            <Card key={index}>
+              <CardHeader>
+                <img
+                  className="w-screen max-h-[200px] object-cover rounded-md"
+                  src={article.urlToImage}
+                ></img>
+                <CardTitle>
+                  {article.title.split(" ").length > 9
+                    ? article.title.split(" ").slice(0, 9).join(" ") + "...."
+                    : article.title}
+                </CardTitle>
+                <CardAuthor>{article.author}</CardAuthor>
+                <CardDescription>{article.description}</CardDescription>
+                {/* <p className="text-blue-600 text-sm">Read more</p> */}
+                <a
+                  href={article.url}
+                  target="__blank"
+                  className="text-blue-600 text-sm"
+                >
+                  View Article
+                </a>
+              </CardHeader>
+            </Card>
+          ))}
       </div>
 
       <div className="flex justify-between">
-        <Button variant={"outline"}>Previous</Button>
-        <Button variant={"default"} className="w-[89.16px]">
+        <Button
+          variant={"outline"}
+          onClick={handlePrev}
+          disabled={currentPage === 1}
+        >
+          Previous
+        </Button>
+        <Button
+          variant={"default"}
+          onClick={handleNext}
+          className="w-[89.16px]"
+        >
           Next
         </Button>
       </div>

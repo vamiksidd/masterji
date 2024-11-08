@@ -1,52 +1,114 @@
+"use client";
+
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-
+import { useState } from "react";
+import axios from "axios";
+import Image from "next/image";
 export default function Weather() {
+  const [city, setCity] = useState("");
+  const [weatherData, setWeatherData] = useState(null);
+  const handleChange = (e) => {
+    setCity(e.target.value);
+  };
+
+  const convertToTimeWithoutTimezone = (timestamp) => {
+    const date = new Date(timestamp * 1000);
+    return date.toLocaleString("en-US", {
+      hour: "numeric",
+      minute: "numeric",
+      second: "numeric",
+      hour12: true,
+    });
+  };
+
+  // Convert sunrise and sunset times (without timezone adjustment)
+  const sunriseTime = weatherData
+    ? convertToTimeWithoutTimezone(weatherData.sys.sunrise)
+    : null;
+  const sunsetTime = weatherData
+    ? convertToTimeWithoutTimezone(weatherData.sys.sunset)
+    : null;
+
+  const getWeather = async () => {
+    try {
+      const res = await axios.get(
+        `https://api.openweathermap.org/data/2.5/weather?appid=${process.env.API_KEY}&q=${city}&units=metric`
+      );
+      // console.log(res);
+
+      if (!res) {
+        throw Error("Invalid input");
+      }
+      setWeatherData(res.data);
+      setCity("");
+    } catch (error) {
+      console.log("error in weather:", error);
+    }
+  };
+
+  console.log(weatherData);
+
   return (
-    <div className="flex-col justify-center bg-white p-5  rounded-md w-full sm:w-1/3 ">
+    <div className="flex-col justify-center bg-white p-5  rounded-md w-full md:w-1/3 ">
       <h2 className="font-bold text-xl">How's the weather today?</h2>
       <div className="flex flex-col lg:flex-row gap-3 my-4">
         <Input
           type="text"
+          value={city}
           placeholder="Enter your city name"
           className="w-full"
+          onChange={handleChange}
         />
-        <Button variant="default" className="w-full sm:w-auto">
+        <Button
+          variant="default"
+          className="w-full sm:w-auto"
+          onClick={getWeather}
+        >
           Get Weather
         </Button>
       </div>
 
       {/* weather data */}
-      <div className="border px-3 flex-col justify-items-center my-5 rounded shadow-md p-8">
-        <div className="text-center">
-          <h2 className="font-bold">Hyderabad, IN</h2>
-          <p className="text-slate-400">light rain</p>
-        </div>
-        <p className="my-10">Icon goes here</p>
+      {weatherData && (
+        <div className="border px-3 flex-col justify-items-center my-5 rounded shadow-md p-8">
+          <div className="text-center">
+            <h2 className="font-bold">{weatherData?.name}</h2>
+            <p className="text-slate-400">{weatherData?.weather[0].main}</p>
+          </div>
+          <p className="my-10">
+            <Image
+              height={50}
+              width={50}
+              src={`http://openweathermap.org/img/w/${weatherData?.weather[0].icon}.png`}
+              alt="icons"
+            />
+          </p>
 
-        <div className="grid grid-cols-2 grid-rows-2 gap-4 max-w-[270px] max-h-[250px] text-sm sm:text-lg">
-          <div className="border rounded-md p-4 flex-col justify-center">
-            <h3 className="font-bold">30.23C</h3>
-            <p className="text-slate-400">Current temperature</p>
-          </div>{" "}
-          <div className="border rounded-md p-4 flex-col justify-items-center">
-            <h3 className="font-bold">32.86C</h3>
-            <p className="text-slate-400">Feels Like</p>
-          </div>{" "}
-          <div className="border rounded-md p-4 flex-col justify-center">
-            <h3 className="font-bold">58%</h3>
-            <p className="text-slate-400">Humidity</p>
-          </div>{" "}
-          <div className="border rounded-md p-4 flex-col justify-center">
-            <h3 className="font-bold">4.12 m/s</h3>
-            <p className="text-slate-400">Wind Speed</p>
-          </div>{" "}
+          <div className="grid grid-cols-2 grid-rows-2 gap-4 max-w-[270px] max-h-[250px] text-sm md:text-md">
+            <div className="border rounded-md p-4 flex-col justify-center">
+              <h3 className="font-bold">{weatherData?.main.temp}℃</h3>
+              <p className="text-slate-400">Current temperature</p>
+            </div>{" "}
+            <div className="border rounded-md p-4 flex-col justify-items-center">
+              <h3 className="font-bold">{weatherData?.main.feels_like}℃</h3>
+              <p className="text-slate-400">Feels Like</p>
+            </div>{" "}
+            <div className="border rounded-md p-4 flex-col justify-center">
+              <h3 className="font-bold">{weatherData?.main.humidity}%</h3>
+              <p className="text-slate-400">Humidity</p>
+            </div>{" "}
+            <div className="border rounded-md p-4 flex-col justify-center">
+              <h3 className="font-bold">{weatherData?.wind.speed} m/s</h3>
+              <p className="text-slate-400">Wind Speed</p>
+            </div>{" "}
+          </div>
+          <div className="my-10 text-center">
+            <h4>Sunrise : {sunriseTime}</h4>
+            <h4>Sunset : {sunsetTime}</h4>
+          </div>
         </div>
-        <div className="my-10 text-center">
-          <h4>Sunrise : 06:08:31 Am</h4>
-          <h4>Sunset : 16:58:31 Pm</h4>
-        </div>
-      </div>
+      )}
     </div>
   );
 }

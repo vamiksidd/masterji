@@ -33,7 +33,7 @@ export default function Weather() {
   const getWeather = async () => {
     try {
       const res = await axios.get(
-        `https://api.openweathermap.org/data/2.5/weather?appid=${process.env.API_KEY}&q=${city}&units=metric`
+        `https://api.openweathermap.org/data/2.5/weather?appid=${process.env.WEATHER_API_KEY}&q=${city}&units=metric`
       );
       // console.log(res);
 
@@ -44,6 +44,7 @@ export default function Weather() {
       setCity("");
     } catch (error) {
       console.log("error in weather:", error);
+      alert("invalid input")
     }
   };
 

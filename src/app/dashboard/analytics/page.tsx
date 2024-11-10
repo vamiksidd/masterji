@@ -1,16 +1,40 @@
-import React from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import { user_data } from "./user_data";
+import { Input } from "@/components/ui/input";
 
-const column = ["Name", "Username", "Email", "Phone", "Website", "Company"];
+
 export default function page() {
+  const [allUsers] = useState(user_data);
+  const [users, setUsers] = useState(user_data);
+  const [searchInput, setSearchInput] = useState("");
+
+  const handleChange = (e) => {
+    setSearchInput(e.target.value);
+  };
+
+  useEffect(() => {
+    if (searchInput === "") {
+      setUsers(allUsers);
+    } else {
+      const filteredItems = allUsers.filter((user) =>
+        user.full_name.toLowerCase().includes(searchInput.toLowerCase())
+      );
+      setUsers(filteredItems);
+    }
+  }, [searchInput, allUsers]);
+
+
   const len = user_data.length;
   return (
-    <div className="flex-col gap-10 p-3 w-full">
-      {/* <div className="flex p-2 justify-between gap-10 bg-white shadow-sm rounded-t-sm">
-                {column.map((tr, id) => (
-                    <p key={id} className='text-slate-500'>{tr}</p>
-                ))}
-            </div> */}
+    <div className="flex-col items-start gap-10 p-3 w-full">
+      <Input
+        className="my-5 w-max"
+        type="text"
+        value={searchInput}
+        placeholder="Search users.."
+        onChange={handleChange} />
+
 
       <table className="bg-white rounded-t-sm shadow-sm w-full table-auto ">
         <thead>
@@ -25,7 +49,7 @@ export default function page() {
         </thead>
 
         <tbody>
-          {user_data.map((item) => (
+          {users.map((item) => (
             <tr key={item.id} className="text-sm font-bold border-t">
               <td className="px-4 py-2">{item.full_name}</td>
               <td className="px-4 py-2">{item.username}</td>

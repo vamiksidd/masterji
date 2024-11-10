@@ -52,7 +52,7 @@ export default function page() {
       setTodos((prevTodos) => [
         ...prevTodos,
         {
-          id: todos.length + 1,
+          id: Date.now(),
           title: todo.title,
           description: todo.description,
           date: todo.date,

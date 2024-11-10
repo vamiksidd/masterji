@@ -21,7 +21,8 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
  News article -  this displays news headlines , author , etc which allows users to browse through different pages of content. The user can also change its view from list mode to grid mode
 
-
+# Kanban Board
+ Kanban board application that allows users to manage tasks through a simple, drag-and-drop interface. The board is divided into three columns: To Do, In Progress, and Completed. Users can add and delete tasks
 
 ## Getting Started
 
@@ -58,10 +59,3 @@ To learn more about Next.js, take a look at the following resources:
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
 
 
-#shadcn components
-```
-npx shadcn@latest add input
-npx shadcn@latest add button
-npx shadcn@latest add card
-
-```

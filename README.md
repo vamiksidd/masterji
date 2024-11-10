@@ -8,9 +8,9 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
  Analytics DashBoard with Charts and Tables
 
 ## Tech Stack
- NextJs
- ShadCn UI Component
- Axios for data fetching
+ -NextJs
+ -ShadCn UI Component
+ -Axios for data fetching
 
 
 # Home Page

@@ -39,6 +39,13 @@ export default function Page() {
     }]
   });
 
+  interface Graph {
+    id: string,
+    year: string,
+    sales: string,
+    userLost: string,
+    month: string,
+  }
   useEffect(() => {
     // Update chart data if graph_data is available
     if (graph_data.length > 0) {
@@ -61,7 +68,7 @@ export default function Page() {
       tooltip: {
         enabled: true,
         callbacks: {
-        
+
           label: function (context: { raw: any; }) {
             return context.raw;
           }

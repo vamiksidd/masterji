@@ -1,6 +1,6 @@
 // @ts-ignore
 "use client";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { columns } from "./dummydata";
 import { TrashIcon } from "lucide-react";
@@ -104,6 +104,9 @@ export default function Page() {
 
     setIsDragging(false);
   };
+<<<<<<< HEAD
+
+=======
   const descriptionRef = useRef(null);
   const dateRef = useRef(null);
   function handleKeyPress(e: React.KeyboardEvent<HTMLInputElement>, nextRef: React.MutableRefObject<null>) {
@@ -113,6 +116,7 @@ export default function Page() {
       nextRef.current?.focus();
     }
   }
+>>>>>>> 99213d8c43c397069c4ba5c7a989b7abeef08bda
   const handleDelete = (e: React.MouseEvent<SVGSVGElement, MouseEvent>, id: any) => {
     e.preventDefault();
     setTodos((prevTodos: any[]) => {
@@ -181,23 +185,20 @@ export default function Page() {
                     name="title"
                     value={todo.title}
                     onChange={handleInputChange}
-                    onKeyDown={(e) => handleKeyPress(e, descriptionRef)}
+                   
                     placeholder="Title"
                   />
                   <Input
                     type="text"
                     name="description"
-                    ref={descriptionRef}
                     value={todo.description}
                     onChange={handleInputChange}
-                    onKeyDown={(e) => handleKeyPress(e, dateRef)}
                     placeholder="Description"
                     className="mt-5"
                   />
                   <Input
                     type="date"
                     name="date"
-                    ref={dateRef}
                     value={todo.date}
                     onChange={handleInputChange}
                     className="mt-5"

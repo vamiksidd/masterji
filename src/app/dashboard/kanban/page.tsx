@@ -1,3 +1,4 @@
+// @ts-ignore
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 
@@ -48,7 +49,7 @@ export default function Page() {
     e.preventDefault();
 
     console.log(todo);
-    if (todo.title.trim() && todo.date.trim() && !isNaN(new Date(todo.date))) {
+    if (todo.title.trim() && todo.date.trim()) {
       setTodos((prevTodos: any) => [
         ...prevTodos,
         {
@@ -108,6 +109,7 @@ export default function Page() {
   function handleKeyPress(e: React.KeyboardEvent<HTMLInputElement>, nextRef: React.MutableRefObject<null>) {
     if (e.key === "Enter") {
       e.preventDefault();
+
       nextRef.current?.focus();
     }
   }

@@ -104,7 +104,14 @@ export default function Page() {
 
     setIsDragging(false);
   };
-
+  const descriptionRef = useRef(null);
+  const dateRef = useRef(null);
+  function handleKeyPress(e: React.KeyboardEvent<HTMLInputElement>, nextRef: React.MutableRefObject<null>) {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      nextRef.current?.focus();
+    }
+  }
   const handleDelete = (e: React.MouseEvent<SVGSVGElement, MouseEvent>, id: any) => {
     e.preventDefault();
     setTodos((prevTodos: any[]) => {

@@ -24,7 +24,7 @@ News article - this displays news headlines , author , etc which allows users to
 
 
 # News-section isnt working!!
- because newsapi doesnt allow it so fix this issue, setup a proxy server which will handle the response.
+ because newsapi doesnt allow it so to fix this issue, setup a proxy server which will handle the response. (currently working on it)
 
 # Kanban Board
 

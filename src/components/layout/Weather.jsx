@@ -4,7 +4,6 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import Image from "next/image";
-import { toast } from "react-toastify";
 import { fetchDataFromApi } from "@/utils/api";
 export default function Weather() {
   const [city, setCity] = useState("");
@@ -44,7 +43,7 @@ export default function Weather() {
       setWeatherData(res);
       setCity("");
     } catch (error) {
-      toast.error("Something went wrong");
+    
       console.log("error in weather:", error);
     }
   };

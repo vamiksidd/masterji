@@ -8,8 +8,7 @@ import {
   CardAuthor,
 } from "@/components/ui/card";
 import { Button } from "../ui/button";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+
 import useFetch from "../../hook/useFetch.jsx";
 
 export default function News() {
@@ -124,34 +123,35 @@ export default function News() {
   dark:[&::-webkit-scrollbar-track]:bg-neutral-700
   dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500 `}
       >
-        {data?.articles.map((article, index) => (
-          <Card key={index}>
-            <CardHeader>
-              <img
-                className="w-screen max-h-[200px] object-cover rounded-md"
-                src={article.urlToImage}
-              ></img>
-              <CardTitle>
-                {article.title.split(" ").length > 9
-                  ? article.title.split(" ").slice(0, 9).join(" ") + "...."
-                  : article.title}
-              </CardTitle>
-              <CardAuthor>{article.author}</CardAuthor>
-              <CardDescription>{article.description}</CardDescription>
-              {/* <p className="text-blue-600 text-sm">Read more</p> */}
-              <a
-                href={article.url}
-                target="__blank"
-                className="text-blue-600 text-sm"
-              >
-                View Article
-              </a>
-            </CardHeader>
-          </Card>
-        ))}
+        {data &&
+          data?.articles.map((article, index) => (
+            <Card key={index}>
+              <CardHeader>
+                <img
+                  className="w-screen max-h-[200px] object-cover rounded-md"
+                  src={article.urlToImage}
+                ></img>
+                <CardTitle>
+                  {article.title.split(" ").length > 9
+                    ? article.title.split(" ").slice(0, 9).join(" ") + "...."
+                    : article.title}
+                </CardTitle>
+                <CardAuthor>{article.author}</CardAuthor>
+                <CardDescription>{article.description}</CardDescription>
+                {/* <p className="text-blue-600 text-sm">Read more</p> */}
+                <a
+                  href={article.url}
+                  target="__blank"
+                  className="text-blue-600 text-sm"
+                >
+                  View Article
+                </a>
+              </CardHeader>
+            </Card>
+          ))}
       </div>
 
-      <div className="flex justify-between">
+      <div className="flex justify-between w-full">
         <Button
           variant={"outline"}
           onClick={handlePrev}
@@ -167,7 +167,6 @@ export default function News() {
           Next
         </Button>
       </div>
-      <ToastContainer />
     </div>
   );
 }

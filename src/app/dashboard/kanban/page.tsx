@@ -10,8 +10,8 @@ import {
 } from "@/components/ui/popover";
 import { Input } from "@/components/ui/input";
 
-export default function page() {
-  const [columnData, setColumn] = useState(columns);
+export default function Page() {
+  const [columnData] = useState(columns);
   const [dragElement, setDragElement] = useState<{
     col_id: string;
     parent_id: string;

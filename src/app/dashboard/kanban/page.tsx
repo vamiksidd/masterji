@@ -17,7 +17,16 @@ export default function Page() {
     parent_id: string;
   } | null>(null);
 
-  const [todos, setTodos] = useState<any[]>([]);  // Default to an empty array
+  const [todos, setTodos] = useState(() => {
+    try {
+      if (typeof window !== "undefined") {
+        const res = localStorage.getItem("todos");
+        return res ? JSON.parse(res) : [];
+      }
+    } catch (error) {
+      console.log("localstorage empty!", error);
+    }
+  });
   const [todo, setTodo] = useState({
     id: 0,
     column_id: "",
@@ -72,6 +81,20 @@ export default function Page() {
 
   const [isDragging, setIsDragging] = useState(false);
 
+  useEffect(() => {
+
+    if (!isDragging) {
+      try {
+        if (todos) {
+          if (typeof window !== "undefined")
+            localStorage.setItem("todos", JSON.stringify(todos));
+        }
+      } catch (error) {
+        console.log("Error updating localStorage:", error);
+      }
+    }
+  }, [todos, isDragging]);
+
   const onDragCard = (entryId: string, columnId: string) => {
     setIsDragging(true);
     setDragElement({
@@ -96,9 +119,8 @@ export default function Page() {
     setTodos((prevTodos) => {
       const updatedTodos = prevTodos.filter((todo) => todo.id !== id);
       try {
-        if (typeof window !== "undefined") {
-          localStorage.setItem("todos", JSON.stringify(updatedTodos));
-        }
+        if (typeof window !== "undefined")
+          localStorage.setItem("todos", JSON.stringify(filterTodos));
       } catch (error) {
         console.error("Error updating localStorage:", error);
       }
@@ -157,6 +179,7 @@ export default function Page() {
                     name="title"
                     value={todo.title}
                     onChange={handleInputChange}
+
                     placeholder="Title"
                   />
                   <Input

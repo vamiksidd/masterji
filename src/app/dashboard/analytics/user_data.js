@@ -180,3 +180,44 @@ export const user_data = [
         "company_name": "Tagchat"
     }
 ]
+
+
+export const graph_data = [
+    {
+        id: 1,
+        year: 2016,
+        sales: 80000,
+        userLost: 823,
+        month:"July",
+    },
+    {
+        id: 2,
+        year: 2017,
+        sales: 45677,
+        userLost: 345,
+        month:"August"
+    },
+    {
+        id: 3,
+        year: 2018,
+        sales: 78888,
+        userLost: 555,
+        month:"September"
+    },
+    {
+        id: 4,
+        year: 2019,
+        sales: 90000,
+        userLost: 4555,
+        month:"October"
+
+    },
+    {
+        id: 5,
+        year: 2020,
+        sales: 4300,
+        userLost: 234,
+        month:"November"
+
+    }
+];

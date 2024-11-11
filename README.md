@@ -1,28 +1,34 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-
 ## Masterji DashBoard
- Dashboard web application which uses technology stack of Next.js, React, Tailwind CSS, and TypeScript. Which features following:
- Weather and News DashBoard
- Kanban Board
- Analytics DashBoard with Charts and Tables
+
+Dashboard web application which uses technology stack of Next.js, React, Tailwind CSS, and TypeScript. Which features following:
+Weather and News DashBoard
+Kanban Board
+Analytics DashBoard with Charts and Tables
 
 ## Tech Stack
- -NextJs
- -ShadCn UI Component
- -Axios for data fetching
 
+-NextJs
+-ShadCn UI Component
+-Axios for data fetching
 
 # Home Page
- Weather and News Dashboard (Route: /dashboard/weather-news)
- This page has two components:
 
- Weather - in which user can search city or country name to get weather updates.
+Weather and News Dashboard (Route: /dashboard/weather-news)
+This page has two components:
 
- News article -  this displays news headlines , author , etc which allows users to browse through different pages of content. The user can also change its view from list mode to grid mode
+Weather - in which user can search city or country name to get weather updates.
+
+News article - this displays news headlines , author , etc which allows users to browse through different pages of content. The user can also change its view from list mode to grid mode
 
 # Kanban Board
- Kanban board application that allows users to manage tasks through a simple, drag-and-drop interface. The board is divided into three columns: To Do, In Progress, and Completed. Users can add and delete tasks
+
+Kanban board application that allows users to manage tasks through a simple, drag-and-drop interface. The board is divided into three columns: To Do, In Progress, and Completed. Users can add and delete tasks
+
+# Analytics Board
+
+The dashboard utilizes Chart.js to display raw data in various chart types, including bar charts, line charts,
 
 ## Getting Started
 
@@ -40,10 +46,6 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-
-
-
-
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
 ## Learn More
@@ -55,7 +57,4 @@ To learn more about Next.js, take a look at the following resources:
 
 ## Deploy on Vercel
 
-
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-
-

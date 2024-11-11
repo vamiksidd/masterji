@@ -129,7 +129,7 @@ export default function News() {
   dark:[&::-webkit-scrollbar-track]:bg-neutral-700
   dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500 `}
       >
-        {loading && !error ? (
+        {loading  ? (
           <div className="h-max px-5 w-96 mx-auto py-10 border shadow-md rounded-md">
             <h3 className="h-10 bg-gray-200 rounded animate-pulse"></h3>
             <ul className="mt-5">

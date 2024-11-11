@@ -20,8 +20,10 @@ export default function Page() {
 
   const [todos, setTodos] = useState(() => {
     try {
-      const res = localStorage.getItem("todos");
-      return res ? JSON.parse(res) : [];
+      if (typeof window !== "undefined") {
+        const res = localStorage.getItem("todos");
+        return res ? JSON.parse(res) : [];
+      }
     } catch (error) {
       console.log("localstorage empty!", error);
     }
@@ -72,7 +74,8 @@ export default function Page() {
     if (!isDragging) {
       try {
         if (todos) {
-          localStorage.setItem("todos", JSON.stringify(todos));
+          if (typeof window !== "undefined")
+            localStorage.setItem("todos", JSON.stringify(todos));
         }
       } catch (error) {
         console.log("Error updating localStorage:", error);
@@ -109,7 +112,8 @@ export default function Page() {
     setTodos((prevTodos: any[]) => {
       const filterTodos = prevTodos.filter((todo) => todo.id !== id);
       try {
-        localStorage.setItem("todos", JSON.stringify(filterTodos));
+        if (typeof window !== "undefined")
+          localStorage.setItem("todos", JSON.stringify(filterTodos));
       } catch (error) {
         console.log("Error updating localStorage:", error);
       }
@@ -172,7 +176,7 @@ export default function Page() {
                     name="title"
                     value={todo.title}
                     onChange={handleInputChange}
-                   
+
                     placeholder="Title"
                   />
                   <Input

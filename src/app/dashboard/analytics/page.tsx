@@ -60,7 +60,8 @@ export default function Page() {
       tooltip: {
         enabled: true,
         callbacks: {
-          label: function (context) {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          label: function (context: { raw: any; }) {
             return context.raw;
           }
         }

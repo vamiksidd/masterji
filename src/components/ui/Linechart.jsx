@@ -6,7 +6,7 @@ import { CategoryScale } from "chart.js";
 import { graph_data } from "../../app/dashboard/analytics/user_data";
 Chart.register(CategoryScale);
 const Linechart = () => {
-  const [chartData, setChartData] = useState({
+  const [chartData] = useState({
     labels: graph_data.map((data) => data.year),
     datasets: [
       {

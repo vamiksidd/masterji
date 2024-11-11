@@ -22,6 +22,10 @@ Weather - in which user can search city or country name to get weather updates.
 
 News article - this displays news headlines , author , etc which allows users to browse through different pages of content. The user can also change its view from list mode to grid mode
 
+
+# News-section isnt working!!
+ because newsapi doesnt allow it so fix this issue, setup a proxy server which will handle the response.
+
 # Kanban Board
 
 Kanban board application that allows users to manage tasks through a simple, drag-and-drop interface. The board is divided into three columns: To Do, In Progress, and Completed. Users can add and delete tasks

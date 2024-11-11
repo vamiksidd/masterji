@@ -120,7 +120,7 @@ export default function Page() {
       const updatedTodos = prevTodos.filter((todo) => todo.id !== id);
       try {
         if (typeof window !== "undefined")
-          localStorage.setItem("todos", JSON.stringify(filterTodos));
+          localStorage.setItem("todos", JSON.stringify(updatedTodos));
       } catch (error) {
         console.error("Error updating localStorage:", error);
       }

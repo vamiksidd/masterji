@@ -20,7 +20,7 @@ export default function News() {
     `https://newsapi.org/v2/top-headlines?country=us&apiKey=${process.env.NEWS_API_KEY}&page=${currentPage}&pageSize=6`
   );
 
-  // console.log(data);
+
 
   const handleCheckboxChange = () => {
     setIsChecked((prev) => !prev);

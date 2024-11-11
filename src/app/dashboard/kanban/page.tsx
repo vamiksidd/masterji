@@ -118,13 +118,13 @@ export default function Page() {
     console.log(id);
 
     setTodos((prevTodos) => {
-      const filterTodos = prevTodos.filter((todo) => todo.id !== id);
       try {
+        const filterTodos = prevTodos.filter((todo) => todo.id !== id);
         localStorage.setItem("todos", JSON.stringify(filterTodos));
+        return filterTodos;
       } catch (error) {
         console.log("Error updating localStorage:", error);
       }
-      return filterTodos;
     });
   };
 

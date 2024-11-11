@@ -1,4 +1,3 @@
-// @ts-ignore
 "use client";
 import React, { useEffect, useState } from "react";
 
@@ -18,14 +17,7 @@ export default function Page() {
     parent_id: string;
   } | null>(null);
 
-  const [todos, setTodos] = useState(() => {
-    try {
-      const res = localStorage.getItem("todos");
-      return res ? JSON.parse(res) : [];
-    } catch (error) {
-      console.log("localstorage empty!", error);
-    }
-  });
+  const [todos, setTodos] = useState<any[]>([]);  // Default to an empty array
   const [todo, setTodo] = useState({
     id: 0,
     column_id: "",
@@ -34,23 +26,37 @@ export default function Page() {
     date: "",
   });
 
-  function handleInputChange(e: { target: { name: any; value: any; }; }) {
-    const fieldName = e.target.name;
-    const fieldValue = e.target.value;
+  // Load todos from localStorage only on client side
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const storedTodos = localStorage.getItem("todos");
+      if (storedTodos) {
+        setTodos(JSON.parse(storedTodos));
+      }
+    }
+  }, []);
 
-    setTodo((prevTodo) => {
-      const updatedTodo = { ...prevTodo, [fieldName]: fieldValue };
-      console.log("Updated Todo:", updatedTodo);
-      return updatedTodo;
-    });
+  // Save todos to localStorage whenever they change
+  useEffect(() => {
+    if (typeof window !== "undefined" && todos.length > 0) {
+      try {
+        localStorage.setItem("todos", JSON.stringify(todos));
+      } catch (error) {
+        console.error("Error updating localStorage:", error);
+      }
+    }
+  }, [todos]);
+
+  function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const { name, value } = e.target;
+    setTodo((prevTodo) => ({ ...prevTodo, [name]: value }));
   }
 
   function handleFormSubmit(e: React.FormEvent<HTMLFormElement>, id: string) {
     e.preventDefault();
 
-    console.log(todo);
     if (todo.title.trim() && todo.date.trim()) {
-      setTodos((prevTodos: any) => [
+      setTodos((prevTodos) => [
         ...prevTodos,
         {
           id: Date.now(),
@@ -60,101 +66,80 @@ export default function Page() {
           column_id: id,
         },
       ]);
+      setTodo({ id: 0, column_id: "", title: "", description: "", date: "" });
     }
-
-    setTodo({ id: 0, column_id: "", title: "", description: "", date: "" });
   }
 
   const [isDragging, setIsDragging] = useState(false);
 
-  useEffect(() => {
-
-    if (!isDragging) {
-      try {
-        if (todos) {
-          localStorage.setItem("todos", JSON.stringify(todos));
-        }
-      } catch (error) {
-        console.log("Error updating localStorage:", error);
-      }
-    }
-  }, [todos, isDragging]);
-
   const onDragCard = (entryId: string, columnId: string) => {
-    console.log("entryId:", entryId, "columnId:", columnId);
     setIsDragging(true);
     setDragElement({
       col_id: entryId,
       parent_id: columnId,
     });
   };
+
   const onDropCard = (id: string) => {
     if (dragElement?.col_id) {
-      setTodos([
-        ...todos.map((item: { id: string; column_id: string; }) => {
-          if (dragElement?.col_id === item.id) {
-            console.log(item.id);
-
-            item.column_id = id;
-          }
-          return item;
-        }),
-      ]);
+      setTodos((prevTodos) =>
+        prevTodos.map((item) =>
+          item.id === dragElement.col_id ? { ...item, column_id: id } : item
+        )
+      );
     }
-
     setIsDragging(false);
   };
-  const handleDelete = (e: React.MouseEvent<SVGSVGElement, MouseEvent>, id: any) => {
-    e.preventDefault();
-    setTodos((prevTodos: any[]) => {
-      const filterTodos = prevTodos.filter((todo) => todo.id !== id);
-      try {
-        localStorage.setItem("todos", JSON.stringify(filterTodos));
-      } catch (error) {
-        console.log("Error updating localStorage:", error);
-      }
 
-      return filterTodos;
+  const handleDelete = (e: React.MouseEvent<SVGSVGElement>, id: string) => {
+    e.preventDefault();
+    setTodos((prevTodos) => {
+      const updatedTodos = prevTodos.filter((todo) => todo.id !== id);
+      try {
+        if (typeof window !== "undefined") {
+          localStorage.setItem("todos", JSON.stringify(updatedTodos));
+        }
+      } catch (error) {
+        console.error("Error updating localStorage:", error);
+      }
+      return updatedTodos;
     });
   };
 
   return (
     <div className="w-full mt-5">
       <div className="grid grid-cols-3 m-5 space-x-10">
-        {columnData.map((column, id) => (
+        {columnData && Array.isArray(columnData) && columnData.map((column, id) => (
           <div
             key={id}
-            className="bg-[#dededf] flex-col p-5 rounded-sm "
+            className="bg-[#dededf] flex-col p-5 rounded-sm"
             onDragOver={(e) => e.preventDefault()}
-            onDrop={() => {
-              onDropCard(column.id);
-            }}
+            onDrop={() => onDropCard(column.id)}
           >
             <h1 className="text-lg text-black w-[200px] mb-3">{column.text}</h1>
             <div className="w-full rounded-sm">
-              {todos.map(
-                (entry: { column_id: string; id: string; title: string | number | bigint | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<React.AwaitedReactNode> | null | undefined; description: string | number | bigint | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<React.AwaitedReactNode> | null | undefined; date: string | number | bigint | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<React.AwaitedReactNode> | null | undefined; }, id: React.Key | null | undefined) =>
-                  entry.column_id === column.id && (
-                    <div
-                      key={id}
-                      draggable
-                      onDrag={() => onDragCard(entry.id, entry.column_id)}
-                      className="bg-white mb-5 rounded-sm p-2"
-                    >
-                      <div className="font-bold flex justify-between">
-                        {entry.title}
-                        <div className="flex items-center gap-5">
-                          <TrashIcon
-                            size={16}
-                            className="hover:text-red-500"
-                            onClick={(e) => handleDelete(e, entry.id)}
-                          />
-                        </div>
+              {todos && Array.isArray(todos) && todos.map((entry, id) =>
+                entry.column_id === column.id && (
+                  <div
+                    key={entry.id}
+                    draggable
+                    onDrag={() => onDragCard(entry.id.toString(), entry.column_id)}
+                    className="bg-white mb-5 rounded-sm p-2"
+                  >
+                    <div className="font-bold flex justify-between">
+                      {entry.title}
+                      <div className="flex items-center gap-5">
+                        <TrashIcon
+                          size={16}
+                          className="hover:text-red-500"
+                          onClick={(e) => handleDelete(e, entry.id)}
+                        />
                       </div>
-                      <p className="">{entry.description}</p>
-                      <p className="text-slate-500">{entry.date}</p>
                     </div>
-                  )
+                    <p>{entry.description}</p>
+                    <p className="text-slate-500">{entry.date}</p>
+                  </div>
+                )
               )}
             </div>
 
@@ -172,7 +157,6 @@ export default function Page() {
                     name="title"
                     value={todo.title}
                     onChange={handleInputChange}
-                   
                     placeholder="Title"
                   />
                   <Input
@@ -193,7 +177,6 @@ export default function Page() {
                   <button
                     type="submit"
                     className="w-full mt-5 bg-slate-400 rounded-sm p-2"
-
                   >
                     Add Todo
                   </button>

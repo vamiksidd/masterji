@@ -33,7 +33,7 @@ export default function Page() {
     date: "",
   });
 
-  function handleInputChange(e) {
+  function handleInputChange(e: { target: { name: any; value: any; }; }) {
     const fieldName = e.target.name;
     const fieldValue = e.target.value;
 
@@ -44,12 +44,12 @@ export default function Page() {
     });
   }
 
-  function handleFormSubmit(e, id) {
+  function handleFormSubmit(e: React.FormEvent<HTMLFormElement>, id: string) {
     e.preventDefault();
 
     console.log(todo);
     if (todo.title.trim() && todo.date.trim() && !isNaN(new Date(todo.date))) {
-      setTodos((prevTodos) => [
+      setTodos((prevTodos: any) => [
         ...prevTodos,
         {
           id: Date.now(),
@@ -90,7 +90,7 @@ export default function Page() {
   const onDropCard = (id: string) => {
     if (dragElement?.col_id) {
       setTodos([
-        ...todos.map((item) => {
+        ...todos.map((item: { id: string; column_id: string; }) => {
           if (dragElement?.col_id === item.id) {
             console.log(item.id);
 
@@ -105,15 +105,15 @@ export default function Page() {
   };
   const descriptionRef = useRef(null);
   const dateRef = useRef(null);
-  function handleKeyPress(e, nextRef) {
+  function handleKeyPress(e: React.KeyboardEvent<HTMLInputElement>, nextRef: React.MutableRefObject<null>) {
     if (e.key === "Enter") {
       e.preventDefault();
       nextRef.current?.focus();
     }
   }
-  const handleDelete = (e, id) => {
+  const handleDelete = (e: React.MouseEvent<SVGSVGElement, MouseEvent>, id: any) => {
     e.preventDefault();
-    setTodos((prevTodos) => {
+    setTodos((prevTodos: any[]) => {
       const filterTodos = prevTodos.filter((todo) => todo.id !== id);
       try {
         localStorage.setItem("todos", JSON.stringify(filterTodos));
@@ -140,7 +140,7 @@ export default function Page() {
             <h1 className="text-lg text-black w-[200px] mb-3">{column.text}</h1>
             <div className="w-full rounded-sm">
               {todos.map(
-                (entry, id) =>
+                (entry: { column_id: string; id: string; title: string | number | bigint | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<React.AwaitedReactNode> | null | undefined; description: string | number | bigint | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<React.AwaitedReactNode> | null | undefined; date: string | number | bigint | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<React.AwaitedReactNode> | null | undefined; }, id: React.Key | null | undefined) =>
                   entry.column_id === column.id && (
                     <div
                       key={id}

@@ -16,11 +16,9 @@ export default function News() {
   const [isChecked, setIsChecked] = useState(false);
   const [view, setView] = useState("grid-cols-1");
   const [currentPage, setCurrentPage] = useState(1);
-  const { data, loading, error } = useFetch(
+  const { data } = useFetch(
     `https://newsapi.org/v2/top-headlines?country=us&apiKey=${process.env.NEWS_API_KEY}&page=${currentPage}&pageSize=6`
   );
-
-
 
   const handleCheckboxChange = () => {
     setIsChecked((prev) => !prev);
@@ -35,9 +33,6 @@ export default function News() {
     setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
   };
   useEffect(() => {}, [currentPage]);
-  if (error) {
-    toast.error("Something went wrong!!");
-  }
 
   return (
     <div className="bg-white p-5 rounded-md w-full md:w-3/4">
@@ -129,46 +124,31 @@ export default function News() {
   dark:[&::-webkit-scrollbar-track]:bg-neutral-700
   dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500 `}
       >
-        {loading  ? (
-          <div className="h-max px-5 w-96 mx-auto py-10 border shadow-md rounded-md">
-            <h3 className="h-10 bg-gray-200 rounded animate-pulse"></h3>
-            <ul className="mt-5">
-              <li className="w-60 h-6 bg-gray-200 rounded dark:bg-gray-700 animate-pulse"></li>
-            </ul>
-            <ul className="mt-5 flex gap-3">
-              <li className="w-full h-6 bg-gray-200 rounded dark:bg-gray-700 animate-pulse"></li>
-            </ul>
-            <ul className="mt-5 flex gap-3">
-              <li className="w-full h-6 bg-gray-200 rounded dark:bg-gray-700 animate-pulse"></li>
-            </ul>
-          </div>
-        ) : (
-          data?.articles.map((article, index) => (
-            <Card key={index}>
-              <CardHeader>
-                <img
-                  className="w-screen max-h-[200px] object-cover rounded-md"
-                  src={article.urlToImage}
-                ></img>
-                <CardTitle>
-                  {article.title.split(" ").length > 9
-                    ? article.title.split(" ").slice(0, 9).join(" ") + "...."
-                    : article.title}
-                </CardTitle>
-                <CardAuthor>{article.author}</CardAuthor>
-                <CardDescription>{article.description}</CardDescription>
-                {/* <p className="text-blue-600 text-sm">Read more</p> */}
-                <a
-                  href={article.url}
-                  target="__blank"
-                  className="text-blue-600 text-sm"
-                >
-                  View Article
-                </a>
-              </CardHeader>
-            </Card>
-          ))
-        )}
+        {data?.articles.map((article, index) => (
+          <Card key={index}>
+            <CardHeader>
+              <img
+                className="w-screen max-h-[200px] object-cover rounded-md"
+                src={article.urlToImage}
+              ></img>
+              <CardTitle>
+                {article.title.split(" ").length > 9
+                  ? article.title.split(" ").slice(0, 9).join(" ") + "...."
+                  : article.title}
+              </CardTitle>
+              <CardAuthor>{article.author}</CardAuthor>
+              <CardDescription>{article.description}</CardDescription>
+              {/* <p className="text-blue-600 text-sm">Read more</p> */}
+              <a
+                href={article.url}
+                target="__blank"
+                className="text-blue-600 text-sm"
+              >
+                View Article
+              </a>
+            </CardHeader>
+          </Card>
+        ))}
       </div>
 
       <div className="flex justify-between">

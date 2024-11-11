@@ -12,6 +12,9 @@ const nextConfig: NextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+  webpack(config, { isServer }) {
+    return config;
+  },
 };
 
 export default nextConfig;

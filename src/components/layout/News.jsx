@@ -15,9 +15,21 @@ export default function News() {
   const [isChecked, setIsChecked] = useState(false);
   const [view, setView] = useState("grid-cols-1");
   const [currentPage, setCurrentPage] = useState(1);
-  const { data } = useFetch(
-    `https://newsapi.org/v2/top-headlines?country=us&apiKey=${process.env.NEWS_API_KEY}&page=${currentPage}&pageSize=6`
-  );
+  const { data, loading, error } = useFetch(`/api/news?page=${currentPage}`);
+
+  if (error) {
+    console.error("Error fetching news:", error);
+  }
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (data) {
+    console.log(data);
+  }
+
+  console.log(data);
 
   const handleCheckboxChange = () => {
     setIsChecked((prev) => !prev);
@@ -31,7 +43,6 @@ export default function News() {
   const handlePrev = () => {
     setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
   };
-  useEffect(() => {}, [currentPage]);
 
   return (
     <div className="bg-white p-5 rounded-md w-full md:w-3/4">

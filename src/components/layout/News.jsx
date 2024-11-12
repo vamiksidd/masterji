@@ -25,12 +25,6 @@ export default function News() {
     return <div>Loading...</div>;
   }
 
-  if (data) {
-    console.log(data);
-  }
-
-  console.log(data);
-
   const handleCheckboxChange = () => {
     setIsChecked((prev) => !prev);
     setView((prevView) =>
